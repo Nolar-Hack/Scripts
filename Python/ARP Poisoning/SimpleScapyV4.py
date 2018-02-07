@@ -11,15 +11,26 @@ import time
 label = Tk()
 label.configure(background = 'white')
 label.title('ARP Poisoning')
-label.geometry('400x100')
+label.geometry('500x200')
+
+Canvas(label, width=400, height=100, bg='ivory').pack(side=TOP, padx=5, pady=5)
 
 HostNew = StringVar()
-Label(label, font  = ('Helvetica',12), text = 'Enter the Host IP', bg = 'white').place(x=0,y=4)
-Entry(label,textvariable=HostNew, bg = "light blue").place(x=4,y=35)
+Label(label, font  = ('Helvetica',12), text = 'Enter the Host IP', bg = 'white').place(x=20,y=120)
+Entry(label,textvariable=HostNew, bg = "light blue").place(x=10,y=150)
 
 GatewayNew = StringVar()
-Label(label, font  = ('Helvetica',12), text = 'Enter the Gateway IP', bg = 'white').place(x=10,y=4)
-Entry(label,textvariable=GatewayNew, bg = "light blue").place(x=4,y=35)
+Label(label, font  = ('Helvetica',12), text = 'Enter the Gateway IP', bg = 'white').place(x=330,y=120)
+Entry(label,textvariable=GatewayNew, bg = "light blue").place(x=320,y=150)
+
+Button(label, text ='Bhouyaa').pack(padx=5, pady=30)
+
+def IpHost():
+    return HostNew.get()
+print IpHost()
+def IpGateway():
+    return GatewayNew.get()
+print IpGateway()
 
 label.mainloop()
 
